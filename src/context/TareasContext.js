@@ -2,18 +2,18 @@
 
 import { createContext, useContext } from "react";
 
-export const TaskContext = createContext()
+export const TareaContext = createContext()
 
 
-export const useTasks =() => {
-    const context = useContext(TaskContext)
+export const useTareas =() => {
+    const context = useContext(TareaContext)
 
     if(!context) throw new Error('Error de ejecución')
 
     return context
 
 }
-export const TaskProvider = ({children}) => {
+export const TareaProvider = ({children}) => {
 
     const tareas =[{
       id:1,
@@ -37,7 +37,7 @@ export const TaskProvider = ({children}) => {
       },
     ]; 
 
-    return <TaskContext.Provider value={{tareas}}>
+    return <TareaContext.Provider value={{tareas}}>
         {children}
-    </TaskContext.Provider>
+    </TareaContext.Provider>
 }

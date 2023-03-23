@@ -1,17 +1,20 @@
 "use client"
-import { useTasks } from "@/context/TasksContext"
+import { useTareas } from "@/context/TareasContext"
 
-import { TaskCard } from "@/components/TaskCard";
+import { TareaCard } from "@/componentes/TareaCard";
+import 'bootstrap/dist/css/bootstrap.css'; // Add this line
 
 export default function Page(){
 
-  const {tareas} = useTasks();
+  const {tareas} = useTareas();
 
   return(
     <div>
+      
       {tareas.map((tarea)=>(
-       <TaskCard tarea={tarea} key={tarea.id} />
+       <TareaCard tarea={tarea} key={tarea.id} />
       ))}
     </div>
+    
   )
 }
