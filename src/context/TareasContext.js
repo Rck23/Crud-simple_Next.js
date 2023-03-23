@@ -3,7 +3,7 @@
 import { createContext, useContext, useState } from "react";
 import { v4 as uuid } from "uuid";
 
-export const TareaContext = createContext();
+const TareaContext = createContext();
 
 export const useTareas = () => {
   const context = useContext(TareaContext);
@@ -14,28 +14,7 @@ export const useTareas = () => {
 };
 
 export const TareaProvider = ({ children }) => {
-  const [tareas, setTareas] = useState([
-    {
-      id: 1,
-      titulo: "Tarea 1",
-      descripcion: "La descripcion detallada de la tarea",
-    },
-    {
-      id: 2,
-      titulo: "Tarea 2",
-      descripcion: "La descripcion detallada de la tarea",
-    },
-    {
-      id: 3,
-      titulo: "Tarea 3",
-      descripcion: "La descripcion detallada de la tarea",
-    },
-    {
-      id: 4,
-      titulo: "Tarea 4",
-      descripcion: "La descripcion detallada de la tarea",
-    },
-  ]);
+  const [tareas, setTareas] = useState([]);
 
   const crearTarea = (titulo, descripcion) => {
     setTareas([
@@ -52,8 +31,17 @@ export const TareaProvider = ({ children }) => {
     setTareas([...tareas.filter((tarea) => tarea.id !== id)]);
   };
 
+  const ActualizarTarea = (id, ActualizarTarea) =>
+    setTareas([
+      ...tareas.map((tarea) =>
+        tarea.id === id ? { ...tarea, ...ActualizarTarea } : tarea
+      ),
+    ]);
+
   return (
-    <TareaContext.Provider value={{ tareas, crearTarea, borrarTarea }}>
+    <TareaContext.Provider
+      value={{ tareas, crearTarea, borrarTarea, ActualizarTarea }}
+    >
       {children}
     </TareaContext.Provider>
   );

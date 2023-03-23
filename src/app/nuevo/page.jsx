@@ -1,13 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTareas } from "@/context/TareasContext";
 import { useRouter } from "next/navigation";
 
-export default function Page() {
-  const [tarea, setTarea] = useState();
+export default function Page({params}) {
+  const [tarea, setTarea] = useState({
+    titulo: "",
+    descripcion: "",
+  });
 
-  const { crearTarea } = useTareas();
+  const { tareas, crearTarea, ActualizarTarea } = useTareas();
 
   const router = useRouter();
 
@@ -18,19 +21,39 @@ export default function Page() {
   const hSubmit = (e) => {
     e.preventDefault();
     // console.log(tarea);
-    crearTarea(tarea.titulo, tarea.descripcion);
-
+    if (params.id) {
+      ActualizarTarea(params.id, tarea)
+    } else {
+      crearTarea(tarea.titulo, tarea.descripcion);
+    }
     router.push("/");
   };
 
+  useEffect(() => {
+    if (params.id) {
+      const tareaEncontrada = tareas.find((tarea) => tarea.id === params.id);
+
+      if (tareaEncontrada)
+        setTarea({
+          titulo: tareaEncontrada.titulo,
+          descripcion: tareaEncontrada.descripcion,
+        });
+    }
+  }, []);
   return (
     <form onSubmit={hSubmit}>
-      <input placeholder="Titulo" name="titulo" onChange={handleCambio} />
+      <input
+        placeholder="Titulo"
+        name="titulo"
+        onChange={handleCambio}
+        value={tarea.titulo}
+      />
 
       <textarea
         placeholder="Descripción"
         name="descripcion"
         onChange={handleCambio}
+        value={tarea.descripcion}
       />
 
       <button>Guardar</button>
